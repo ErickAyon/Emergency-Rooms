@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Search Page</h1>
+        <form>
+            <label for="search">Search for a hospital:</label>
+            <input type="text" id="search" oninput="filterHospitals()">
+            <br><br>
+            <label for="name">Select a hospital:</label>
+            <select id="name" onchange="updateLink()">
+                <option value="ChristianaCare">ChristianaCare</option>
+                <option value="Penn Medicine">Penn Medicine</option>
+                <option value="Jefferson">Jefferson</option>
+                <option value="Childrens Hospital">Children's Hospital</option>
+                <option value="Saint Francis">Saint Francis</option>
+                <!-- Add more hospitals as needed -->
+            </select>
+            <button type="button" onclick="generateRandomTime()">Average Waiting time</button>
+        </form>
+        <p id="result"></p>
+        <p id="link"></p>
+    </div>
+
+    <script>
+        function generateRandomTime() {
+            var min = 30; // 30 minutes
+            var max = 120; // 2 hours
+            var randomTime = Math.floor(Math.random() * (max - min + 1)) + min;
+            var hospital = document.getElementById("name").value;
+            document.getElementById("result").innerText = "Average Waiting time at " + hospital + ": " + randomTime + " minutes";
+        }
+
+        function updateLink() {
+            var hospital = document.getElementById("name").value;
+            var link = "";
+
+            switch (hospital) {
+                case "ChristianaCare":
+                    link = "https://christianacare.org/us/en/facilities";
+                    break;
+                case "Penn Medicine":
+                    link = "https://www.pennmedicine.org/practices";
+                    break;
+                case "Jefferson":
+                    link = "https://www.jeffersonhealth.org/locations";
+                    break;
+                case "Childrens Hospital":
+                    link = "https://www.chop.edu/locations/main-hospital";
+                    break;
+                case "Saint Francis":
+                    link = "https://www.trinityhealthma.org/find-a-location/";
+                    break;
+                // Add more cases for additional hospitals if needed
+            }
+
+            var googleLink = document.createElement("a");
+            googleLink.href = link;
+            googleLink.target = "_blank";
+            googleLink.textContent = "Hospital Website";
+
+            var linkParagraph = document.getElementById("link");
+            linkParagraph.innerHTML = ""; // Clear previous link if any
+            linkParagraph.appendChild(googleLink);
+        }
+
+        function filterHospitals() {
+            var input, filter, select, option, i;
+            input = document.getElementById("search");
+            filter = input.value.toUpperCase();
+            select = document.getElementById("name");
+            option = select.getElementsByTagName("option");
+            for (i = 0; i < option.length; i++) {
+                if (option[i].text.toUpperCase().indexOf(filter) > -1) {
+                    option[i].style.display = "";
+                } else {
+                    option[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
